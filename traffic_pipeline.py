@@ -9,7 +9,7 @@ from models.traffic_graph import build_traffic_graph
 # MODEL PATHS
 # =====================================================
 
-YOLO_MODEL_PATH = "runs/detect/train-2/weights/best.pt"
+YOLO_MODEL_PATH = "models/yolo_best.pt"
 GAT_MODEL_PATH = "models/gat_traffic_model.pt"
 
 
