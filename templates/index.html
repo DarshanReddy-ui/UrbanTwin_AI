@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        UrbanTwin AI - Traffic Control Center
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            🚦
+        </div>
+
+        <div>
+
+            <h1>
+                UrbanTwin AI
+            </h1>
+
+            <span>
+                TRAFFIC CONTROL CENTER
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="location-box">
+
+        <small>
+            MONITORED ZONE
+        </small>
+
+        <strong>
+            📍 Urban District 01
+        </strong>
+
+    </div>
+
+
+    <div class="search-box">
+
+        🔍
+
+        <input
+            type="text"
+            placeholder="Search signals, roads, cameras..."
+        >
+
+    </div>
+
+
+    <div class="time-box">
+
+        <span id="clock">
+            --:--:--
+        </span>
+
+        <small>
+            IST
+        </small>
+
+    </div>
+
+
+    <div class="live-status">
+
+        <span class="live-dot"></span>
+
+        LIVE
+
+    </div>
+
+
+    <button class="top-icon">
+        🔔
+    </button>
+
+
+    <button class="top-icon">
+        ⚙
+    </button>
+
+
+    <div class="controller">
+
+        <strong>
+            UrbanTwin
+        </strong>
+
+        <small>
+            AI Controller
+        </small>
+
+    </div>
+
+
+    <div class="ai-circle">
+        AI
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<div class="app-layout">
+
+
+    <!-- =================================================
+         LEFT CONTROL PANEL
+    ================================================== -->
+
+    <aside class="left-panel">
+
+
+        <div class="panel-title">
+
+            <h2>
+                Control Panel
+            </h2>
+
+            <p>
+                System Configuration & Layers
+            </p>
+
+        </div>
+
+
+        <!-- QUICK STATUS -->
+
+        <div class="quick-stats">
+
+
+            <div class="quick-card">
+
+                <span>
+                    Congestion
+                </span>
+
+                <strong
+                    id="sideCongestion"
+                    class="high">
+
+                    --
+
+                </strong>
+
+                <small>
+                    Traffic Level
+                </small>
+
+            </div>
+
+
+            <div class="quick-card">
+
+                <span>
+                    System
+                </span>
+
+                <strong class="system-ok">
+                    98%
+                </strong>
+
+                <small>
+                    Operational
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="side-nav">
+
+            <div class="nav-item active">
+
+                ▦
+
+                <span>
+                    Dashboard
+                </span>
+
+            </div>
+
+
+            <div class="nav-item">
+
+                ☷
+
+                <span>
+                    Traffic Controls
+                </span>
+
+            </div>
+
+
+            <div class="nav-item">
+
+                ▥
+
+                <span>
+                    Analytics
+                </span>
+
+            </div>
+
+        </nav>
+
+
+
+        <!-- MAP LAYERS -->
+
+        <div class="layer-title">
+            MAP LAYERS
+        </div>
+
+
+        <div class="layer-card">
+
+            <strong>
+                ▱ &nbsp; Traffic Density
+            </strong>
+
+            <span>
+                ⌃
+            </span>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    checked>
+
+                Real-time Heatmap
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox">
+
+                Historical Average
+
+            </label>
+
+        </div>
+
+
+        <div class="layer-card collapsed">
+
+            🚗
+
+            <strong>
+                Vehicle Filter
+            </strong>
+
+            <span>
+                ⌄
+            </span>
+
+        </div>
+
+
+        <div class="layer-card collapsed">
+
+            🚦
+
+            <strong>
+                Signal Status
+            </strong>
+
+            <span>
+                ⌄
+            </span>
+
+        </div>
+
+
+        <div class="layer-card collapsed">
+
+            ◷
+
+            <strong>
+                Time Presets
+            </strong>
+
+            <span>
+                ⌄
+            </span>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         CENTER TRAFFIC MAP
+    ================================================== -->
+
+    <main class="map-area">
+
+
+        <div class="map-background">
+
+
+            <!-- HORIZONTAL ROAD 1 -->
+
+            <div class="road horizontal road-one">
+
+                <div class="road-line"></div>
+
+            </div>
+
+
+            <!-- HORIZONTAL ROAD 2 -->
+
+            <div class="road horizontal road-two">
+
+                <div class="road-line"></div>
+
+            </div>
+
+
+            <!-- VERTICAL ROAD 1 -->
+
+            <div class="road vertical road-three">
+
+                <div class="road-line"></div>
+
+            </div>
+
+
+            <!-- VERTICAL ROAD 2 -->
+
+            <div class="road vertical road-four">
+
+                <div class="road-line"></div>
+
+            </div>
+
+
+            <!-- DIAGONAL ROAD -->
+
+            <div class="road diagonal-road"></div>
+
+
+            <!-- VEHICLES -->
+
+            <div class="vehicle vehicle-green">
+                🚙
+            </div>
+
+
+            <div class="vehicle vehicle-red">
+                🚗
+            </div>
+
+
+            <div class="vehicle vehicle-blue">
+                🚙
+            </div>
+
+
+
+            <!-- =========================================
+                 JUNCTION 402
+            ========================================== -->
+
+            <div class="junction junction-402">
+
+                <div class="junction-label">
+
+                    ID:402
+
+                    <span>
+                        ● 12s
+                    </span>
+
+                </div>
+
+
+                <div class="signal green">
+
+                    <span></span>
+
+                    <strong>
+                        402
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 JUNCTION 405
+            ========================================== -->
+
+            <div class="junction junction-405">
+
+                <div class="junction-label red-label">
+
+                    ID:405
+
+                    <span>
+                        45s
+                    </span>
+
+                </div>
+
+
+                <div class="signal red">
+
+                    <span></span>
+
+                    <strong>
+                        405
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 JUNCTION 219
+            ========================================== -->
+
+            <div class="junction junction-219">
+
+                <div class="junction-label yellow-label">
+
+                    ID:219
+
+                    <span>
+                        OFFLINE
+                    </span>
+
+                </div>
+
+
+                <div class="signal yellow">
+
+                    <span></span>
+
+                    <strong>
+                        219
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- MAP LEGEND -->
+
+        <div class="map-legend">
+
+            <strong>
+                Traffic Status
+            </strong>
+
+
+            <span>
+
+                <i class="legend-green"></i>
+
+                Low
+
+            </span>
+
+
+            <span>
+
+                <i class="legend-yellow"></i>
+
+                Medium
+
+            </span>
+
+
+            <span>
+
+                <i class="legend-red"></i>
+
+                High
+
+            </span>
+
+        </div>
+
+
+
+        <!-- MAP CONTROLS -->
+
+        <div class="map-controls">
+
+            <button onclick="zoomMap(0.1)">
+                +
+            </button>
+
+            <button onclick="zoomMap(-0.1)">
+                −
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         RIGHT AI ANALYSIS PANEL
+    ================================================== -->
+
+    <aside class="right-panel">
+
+
+        <!-- PANEL HEADER -->
+
+        <div class="right-panel-header">
+
+            <div>
+
+                <span class="panel-label">
+                    AI TRAFFIC ANALYSIS
+                </span>
+
+
+                <h2>
+                    Junction 402
+                </h2>
+
+
+                <p>
+                    Central Avenue & Main Street
+                </p>
+
+            </div>
+
+
+            <span class="active-status">
+                ● ACTIVE
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TRAFFIC IMAGE
+        ================================================== -->
+
+        <section class="analysis-card">
+
+            <h3>
+                📷 Traffic Image
+            </h3>
+
+
+            <p class="section-description">
+
+                Upload a CCTV traffic image
+                for AI analysis.
+
+            </p>
+
+
+            <label
+                for="trafficFile"
+                class="upload-btn">
+
+                📷 Select Traffic Image
+
+            </label>
+
+
+            <input
+                type="file"
+                id="trafficFile"
+                accept="image/*"
+                hidden
+            >
+
+
+            <div
+                id="selectedFile"
+                class="selected-file">
+
+                No image selected
+
+            </div>
+
+
+            <button
+                type="button"
+                class="analyze-btn"
+                onclick="analyzeTraffic()">
+
+                🤖 Analyze Traffic
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             VEHICLE DETECTION
+        ================================================== -->
+
+        <section class="analysis-card">
+
+            <h3>
+                🚗 Vehicle Detection
+            </h3>
+
+
+            <div class="result-grid">
+
+
+                <div class="result-card">
+
+                    <span>
+                        Cars
+                    </span>
+
+                    <strong id="cars">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span>
+                        Heavy
+                    </span>
+
+                    <strong id="heavy">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="total">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span>
+                        Density
+                    </span>
+
+                    <strong id="density">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONGESTION
+        ================================================== -->
+
+        <section class="analysis-card congestion-card">
+
+            <h3>
+                📊 Congestion Status
+            </h3>
+
+
+            <div
+                id="congestionDisplay"
+                class="congestion-display">
+
+                <span id="congestion">
+                    --
+                </span>
+
+            </div>
+
+
+            <p>
+                Current traffic condition
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SIGNAL TIMING
+        ================================================== -->
+
+        <section class="analysis-card">
+
+            <h3>
+                🚦 Recommended Signal Timing
+            </h3>
+
+
+            <div class="timing-grid">
+
+
+                <div class="timing green-timing">
+
+                    <span>
+                        GREEN
+                    </span>
+
+                    <strong id="greenTime">
+                        --
+                    </strong>
+
+                    <small>
+                        seconds
+                    </small>
+
+                </div>
+
+
+                <div class="timing red-timing">
+
+                    <span>
+                        RED
+                    </span>
+
+                    <strong id="redTime">
+                        --
+                    </strong>
+
+                    <small>
+                        seconds
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             GAT JUNCTION ANALYSIS
+        ================================================== -->
+
+        <section class="analysis-card gat-card">
+
+            <h3>
+                🧠 GAT Junction Analysis
+            </h3>
+
+
+            <p class="section-description">
+
+                Graph Attention Network
+                congestion prediction.
+
+            </p>
+
+
+            <div class="gat-junction-grid">
+
+
+                <!-- JUNCTION 402 -->
+
+                <div class="gat-junction-card">
+
+                    <span>
+                        Junction 402
+                    </span>
+
+                    <strong id="gat402">
+                        --
+                    </strong>
+
+                    <small id="gat402Confidence">
+                        Confidence: --
+                    </small>
+
+                </div>
+
+
+
+                <!-- JUNCTION 405 -->
+
+                <div class="gat-junction-card">
+
+                    <span>
+                        Junction 405
+                    </span>
+
+                    <strong id="gat405">
+                        --
+                    </strong>
+
+                    <small id="gat405Confidence">
+                        Confidence: --
+                    </small>
+
+                </div>
+
+
+
+                <!-- JUNCTION 219 -->
+
+                <div class="gat-junction-card">
+
+                    <span>
+                        Junction 219
+                    </span>
+
+                    <strong id="gat219">
+                        --
+                    </strong>
+
+                    <small id="gat219Confidence">
+                        Confidence: --
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             AI RECOMMENDATION
+        ================================================== -->
+
+        <section class="analysis-card ai-card">
+
+            <h3>
+                🤖 AI Recommendation
+            </h3>
+
+
+            <p id="aiRecommendation">
+
+                Upload a traffic image
+                to begin analysis.
+
+            </p>
+
+        </section>
+
+
+    </aside>
+
+</div>
+
+
+
+<!-- =====================================================
+     BOTTOM STATUS BAR
+===================================================== -->
+
+<footer class="statusbar">
+
+    <div>
+        ● System Operational
+    </div>
+
+
+    <div id="systemStatus">
+        YOLO + GAT: Ready
+    </div>
+
+
+    <div>
+        GAT Model: Active
+    </div>
+
+
+    <div>
+        UrbanTwin AI
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

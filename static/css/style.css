@@ -1,0 +1,1983 @@
+/* =====================================================
+   URBANTWIN AI - TRAFFIC CONTROL CENTER
+===================================================== */
+
+:root {
+
+    --bg: #061214;
+
+    --panel: #09191c;
+
+    --panel-light: #0d2226;
+
+    --panel-hover: #12363c;
+
+    --border: #193b40;
+
+    --cyan: #00d9ff;
+
+    --cyan-dark: #087d91;
+
+    --green: #00e676;
+
+    --yellow: #ffc400;
+
+    --red: #ff465c;
+
+    --text: #edf7f8;
+
+    --muted: #789296;
+
+}
+
+
+
+* {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+
+
+body {
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow: hidden;
+
+}
+
+
+
+/* =====================================================
+   TOP BAR
+===================================================== */
+
+.topbar {
+
+    height: 104px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    padding: 0 18px;
+
+    background: #071619;
+
+    border-bottom: 1px solid var(--border);
+
+}
+
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-width: 350px;
+
+}
+
+
+
+.brand-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    border: 1px solid var(--cyan-dark);
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    background: #092126;
+
+}
+
+
+
+.brand h1 {
+
+    font-size: 30px;
+
+    margin-bottom: 5px;
+
+}
+
+
+
+.brand span {
+
+    color: var(--cyan);
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    font-weight: bold;
+
+}
+
+
+
+.location-box {
+
+    border-left: 1px solid var(--border);
+
+    padding-left: 26px;
+
+    min-width: 270px;
+
+}
+
+
+
+.location-box small {
+
+    display: block;
+
+    color: var(--muted);
+
+    letter-spacing: 3px;
+
+    font-size: 10px;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+.location-box strong {
+
+    font-size: 16px;
+
+}
+
+
+
+.search-box {
+
+    height: 64px;
+
+    flex: 1;
+
+    max-width: 360px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 18px;
+
+    background: #0a2024;
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    color: var(--muted);
+
+}
+
+
+
+.search-box input {
+
+    width: 100%;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 15px;
+
+}
+
+
+
+.time-box {
+
+    min-width: 158px;
+
+    height: 64px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+
+.time-box span {
+
+    font-weight: bold;
+
+    font-size: 14px;
+
+}
+
+
+
+.time-box small {
+
+    color: var(--muted);
+
+    margin-top: 4px;
+
+}
+
+
+
+.live-status {
+
+    height: 46px;
+
+    padding: 0 22px;
+
+    border-radius: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--green);
+
+    border: 1px solid #075f4b;
+
+    background: #09261f;
+
+    font-weight: bold;
+
+}
+
+
+
+.live-dot {
+
+    width: 10px;
+
+    height: 10px;
+
+    background: var(--green);
+
+    border-radius: 50%;
+
+    box-shadow: 0 0 12px var(--green);
+
+}
+
+
+
+.top-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+
+    background: #0a2024;
+
+    color: var(--text);
+
+    font-size: 21px;
+
+}
+
+
+
+.controller {
+
+    border-left: 1px solid var(--border);
+
+    padding-left: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+
+.controller small {
+
+    color: var(--muted);
+
+    margin-top: 4px;
+
+}
+
+
+
+.ai-circle {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 50%;
+
+    background: #f3e9df;
+
+    color: #202020;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+
+}
+
+
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.app-layout {
+
+    height: calc(100vh - 144px);
+
+    display: grid;
+
+    grid-template-columns:
+        320px
+        minmax(450px, 1fr)
+        435px;
+
+}
+
+
+
+/* =====================================================
+   LEFT PANEL
+===================================================== */
+
+.left-panel {
+
+    background: #07191c;
+
+    border-right: 1px solid var(--border);
+
+    padding: 24px 16px;
+
+    overflow-y: auto;
+
+}
+
+
+
+.panel-title h2 {
+
+    font-size: 21px;
+
+}
+
+
+
+.panel-title p {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+}
+
+
+
+.quick-stats {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin: 22px 0;
+
+}
+
+
+
+.quick-card {
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+}
+
+
+
+.quick-card span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+
+.quick-card strong {
+
+    display: block;
+
+    font-size: 18px;
+
+    margin: 8px 0;
+
+}
+
+
+
+.quick-card small {
+
+    color: var(--muted);
+
+}
+
+
+
+.quick-card .high {
+
+    color: var(--red);
+
+}
+
+
+
+.system-ok {
+
+    color: var(--green);
+
+}
+
+
+
+.side-nav {
+
+    margin: 20px 0 32px;
+
+}
+
+
+
+.nav-item {
+
+    padding: 17px;
+
+    border-radius: 12px;
+
+    color: #a6bec2;
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+
+    margin-bottom: 5px;
+
+}
+
+
+
+.nav-item.active {
+
+    color: var(--cyan);
+
+    background: #103d44;
+
+    border-left: 3px solid var(--cyan);
+
+}
+
+
+
+.layer-title {
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+.layer-card {
+
+    border: 1px solid var(--border);
+
+    background: #081c1f;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+.layer-card strong {
+
+    font-size: 14px;
+
+}
+
+
+
+.layer-card > span {
+
+    float: right;
+
+    color: var(--muted);
+
+}
+
+
+
+.layer-card label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    color: #a6bec2;
+
+    font-size: 12px;
+
+}
+
+
+
+.layer-card input {
+
+    accent-color: var(--cyan);
+
+    margin-right: 8px;
+
+}
+
+
+
+.layer-card.collapsed {
+
+    height: 68px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+
+.layer-card.collapsed strong {
+
+    flex: 1;
+
+}
+
+
+
+/* =====================================================
+   MAP
+===================================================== */
+
+.map-area {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: #020e10;
+
+}
+
+
+
+.map-background {
+
+    position: absolute;
+
+    inset: 0;
+
+    transform-origin: center;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 217, 255, 0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 217, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 40px 40px;
+
+}
+
+
+
+.road {
+
+    position: absolute;
+
+    background: #102d31;
+
+    border: 1px solid #1b4a50;
+
+}
+
+
+
+.horizontal {
+
+    width: 100%;
+
+    height: 150px;
+
+}
+
+
+
+.road-one {
+
+    top: 32%;
+
+}
+
+
+
+.road-two {
+
+    top: 67%;
+
+}
+
+
+
+.vertical {
+
+    width: 132px;
+
+    height: 100%;
+
+}
+
+
+
+.road-three {
+
+    left: 32%;
+
+}
+
+
+
+.road-four {
+
+    right: 17%;
+
+}
+
+
+
+.diagonal-road {
+
+    width: 125%;
+
+    height: 125px;
+
+    top: 50%;
+
+    left: -10%;
+
+    transform:
+        rotate(-29deg);
+
+}
+
+
+
+.road-line {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 0;
+
+    width: 100%;
+
+    border-top:
+        3px dashed
+        rgba(0, 217, 255, 0.35);
+
+}
+
+
+
+.vertical .road-line {
+
+    top: 0;
+
+    left: 50%;
+
+    width: 0;
+
+    height: 100%;
+
+    border-top: none;
+
+    border-left:
+        3px dashed
+        rgba(0, 217, 255, 0.35);
+
+}
+
+
+
+.vehicle {
+
+    position: absolute;
+
+    font-size: 22px;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(0, 217, 255, 0.7)
+        );
+
+}
+
+
+
+.vehicle-green {
+
+    top: 38%;
+
+    left: 37%;
+
+}
+
+
+
+.vehicle-red {
+
+    top: 37%;
+
+    left: 63%;
+
+}
+
+
+
+.vehicle-blue {
+
+    top: 58%;
+
+    left: 73%;
+
+}
+
+
+
+/* =====================================================
+   JUNCTIONS
+===================================================== */
+
+.junction {
+
+    position: absolute;
+
+    text-align: center;
+
+}
+
+
+
+.junction-402 {
+
+    top: 40%;
+
+    left: 50%;
+
+}
+
+
+
+.junction-405 {
+
+    top: 58%;
+
+    right: 23%;
+
+}
+
+
+
+.junction-219 {
+
+    top: 72%;
+
+    right: 17%;
+
+}
+
+
+
+.junction-label {
+
+    padding: 11px 14px;
+
+    background: #071a1d;
+
+    border: 1px solid var(--green);
+
+    border-radius: 9px;
+
+    margin-bottom: 10px;
+
+    font-size: 11px;
+
+}
+
+
+
+.junction-label span {
+
+    color: var(--green);
+
+    margin-left: 8px;
+
+}
+
+
+
+.red-label {
+
+    border-color: var(--red);
+
+}
+
+
+
+.red-label span {
+
+    color: var(--red);
+
+}
+
+
+
+.yellow-label {
+
+    border-color: var(--yellow);
+
+}
+
+
+
+.yellow-label span {
+
+    color: var(--yellow);
+
+}
+
+
+
+.signal {
+
+    width: 88px;
+
+    height: 88px;
+
+    border: 2px solid;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #061417;
+
+}
+
+
+
+.signal span {
+
+    width: 26px;
+
+    height: 26px;
+
+    border-radius: 50%;
+
+    margin-bottom: 6px;
+
+}
+
+
+
+.signal strong {
+
+    font-size: 16px;
+
+}
+
+
+
+.signal.green {
+
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 25px
+        rgba(0, 230, 118, 0.35);
+
+}
+
+
+
+.signal.green span {
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 15px
+        var(--green);
+
+}
+
+
+
+.signal.red {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 25px
+        rgba(255, 70, 92, 0.35);
+
+}
+
+
+
+.signal.red span {
+
+    background: var(--red);
+
+    box-shadow:
+        0 0 15px
+        var(--red);
+
+}
+
+
+
+.signal.yellow {
+
+    border-color: var(--yellow);
+
+    box-shadow:
+        0 0 25px
+        rgba(255, 196, 0, 0.35);
+
+}
+
+
+
+.signal.yellow span {
+
+    background: var(--yellow);
+
+    box-shadow:
+        0 0 15px
+        var(--yellow);
+
+}
+
+
+
+/* =====================================================
+   MAP LEGEND
+===================================================== */
+
+.map-legend {
+
+    position: absolute;
+
+    bottom: 24px;
+
+    left: 24px;
+
+    padding: 15px 20px;
+
+    background: #07191c;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    font-size: 12px;
+
+}
+
+
+
+.map-legend span {
+
+    color: var(--muted);
+
+}
+
+
+
+.map-legend i {
+
+    display: inline-block;
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    margin-right: 5px;
+
+}
+
+
+
+.legend-green {
+
+    background: var(--green);
+
+}
+
+
+
+.legend-yellow {
+
+    background: var(--yellow);
+
+}
+
+
+
+.legend-red {
+
+    background: var(--red);
+
+}
+
+
+
+.map-controls {
+
+    position: absolute;
+
+    right: 22px;
+
+    bottom: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+
+.map-controls button {
+
+    width: 52px;
+
+    height: 52px;
+
+    background: #0b2529;
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    font-size: 25px;
+
+}
+
+
+
+/* =====================================================
+   RIGHT PANEL
+===================================================== */
+
+.right-panel {
+
+    background: #07191c;
+
+    border-left: 1px solid var(--border);
+
+    padding: 20px 18px;
+
+    overflow-y: auto;
+
+}
+
+
+
+.right-panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    border-bottom: 1px solid var(--border);
+
+    padding-bottom: 18px;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.panel-label {
+
+    color: var(--cyan);
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    font-weight: bold;
+
+}
+
+
+
+.right-panel-header h2 {
+
+    margin-top: 10px;
+
+    font-size: 23px;
+
+}
+
+
+
+.right-panel-header p {
+
+    color: var(--muted);
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+}
+
+
+
+.active-status {
+
+    color: var(--green);
+
+    font-size: 11px;
+
+}
+
+
+
+/* =====================================================
+   ANALYSIS CARDS
+===================================================== */
+
+.analysis-card {
+
+    background: #081c1f;
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    padding: 16px;
+
+    margin-bottom: 14px;
+
+}
+
+
+
+.analysis-card h3 {
+
+    font-size: 15px;
+
+    margin-bottom: 8px;
+
+}
+
+
+
+.section-description {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    margin-bottom: 13px;
+
+}
+
+
+
+.upload-btn {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    border: 1px dashed #147d8d;
+
+    border-radius: 9px;
+
+    color: var(--cyan);
+
+    background: #092329;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+
+.upload-btn:hover {
+
+    background: #0d3037;
+
+}
+
+
+
+.selected-file {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin: 12px 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+
+.analyze-btn {
+
+    width: 100%;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: var(--cyan);
+
+    color: #031316;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+
+.analyze-btn:hover {
+
+    background: #35e2ff;
+
+}
+
+
+
+.analyze-btn:disabled {
+
+    opacity: 0.65;
+
+    cursor: wait;
+
+}
+
+
+
+/* =====================================================
+   RESULT GRID
+===================================================== */
+
+.result-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+}
+
+
+
+.result-card {
+
+    background: #0a2226;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    padding: 15px;
+
+}
+
+
+
+.result-card span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+
+.result-card strong {
+
+    display: block;
+
+    margin-top: 9px;
+
+    font-size: 22px;
+
+}
+
+
+
+/* =====================================================
+   CONGESTION
+===================================================== */
+
+.congestion-display {
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    background: #241116;
+
+    border: 1px solid #632331;
+
+    text-align: center;
+
+    margin-top: 12px;
+
+}
+
+
+
+.congestion-display span {
+
+    color: var(--red);
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+}
+
+
+
+.congestion-card p {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    text-align: center;
+
+    margin-top: 8px;
+
+}
+
+
+
+/* =====================================================
+   SIGNAL TIMING
+===================================================== */
+
+.timing-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+}
+
+
+
+.timing {
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    padding: 14px;
+
+}
+
+
+
+.timing span {
+
+    display: block;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+}
+
+
+
+.timing strong {
+
+    display: block;
+
+    font-size: 27px;
+
+    margin: 6px 0;
+
+}
+
+
+
+.timing small {
+
+    color: var(--muted);
+
+}
+
+
+
+.green-timing {
+
+    background: #09251d;
+
+    border: 1px solid #145c44;
+
+}
+
+
+
+.green-timing span,
+
+.green-timing strong {
+
+    color: var(--green);
+
+}
+
+
+
+.red-timing {
+
+    background: #261116;
+
+    border: 1px solid #66303a;
+
+}
+
+
+
+.red-timing span,
+
+.red-timing strong {
+
+    color: var(--red);
+
+}
+
+
+
+/* =====================================================
+   GAT JUNCTION ANALYSIS
+===================================================== */
+
+.gat-card {
+
+    border-color: #164951;
+
+}
+
+
+
+.gat-junction-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+}
+
+
+
+.gat-junction-card {
+
+    background: var(--panel-light);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    padding: 12px 7px;
+
+    text-align: center;
+
+}
+
+
+
+.gat-junction-card span {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    margin-bottom: 7px;
+
+}
+
+
+
+.gat-junction-card strong {
+
+    display: block;
+
+    color: var(--red);
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+}
+
+
+
+.gat-junction-card small {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    margin-top: 6px;
+
+}
+
+
+
+/* =====================================================
+   AI RECOMMENDATION
+===================================================== */
+
+.ai-card {
+
+    border-color: #126074;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a2227,
+            #08191c
+        );
+
+}
+
+
+
+.ai-card h3 {
+
+    color: var(--cyan);
+
+}
+
+
+
+.ai-card p {
+
+    color: #b8d0d3;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+
+/* =====================================================
+   STATUS BAR
+===================================================== */
+
+.statusbar {
+
+    height: 40px;
+
+    background: #061719;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+}
+
+
+
+.statusbar div:first-child {
+
+    color: var(--green);
+
+}
+
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+
+::-webkit-scrollbar-track {
+
+    background: #061214;
+
+}
+
+
+
+::-webkit-scrollbar-thumb {
+
+    background: #16454b;
+
+    border-radius: 5px;
+
+}
+
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+    .topbar {
+
+        gap: 10px;
+
+    }
+
+
+    .brand {
+
+        min-width: 270px;
+
+    }
+
+
+    .location-box {
+
+        display: none;
+
+    }
+
+
+    .app-layout {
+
+        grid-template-columns:
+            250px
+            1fr
+            380px;
+
+    }
+
+}
+
+
+
+@media (max-width: 950px) {
+
+    body {
+
+        overflow: auto;
+
+    }
+
+
+    .topbar {
+
+        height: auto;
+
+        min-height: 90px;
+
+        flex-wrap: wrap;
+
+        padding: 12px;
+
+    }
+
+
+    .search-box {
+
+        order: 10;
+
+        max-width: none;
+
+        flex-basis: 100%;
+
+    }
+
+
+    .app-layout {
+
+        height: auto;
+
+        min-height: calc(100vh - 150px);
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .left-panel {
+
+        display: none;
+
+    }
+
+
+    .map-area {
+
+        height: 600px;
+
+    }
+
+
+    .right-panel {
+
+        border-left: none;
+
+        border-top: 1px solid var(--border);
+
+    }
+
+
+    .statusbar {
+
+        height: auto;
+
+        min-height: 40px;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+
+        padding: 10px;
+
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .brand h1 {
+
+        font-size: 22px;
+
+    }
+
+
+    .brand span {
+
+        font-size: 8px;
+
+    }
+
+
+    .time-box,
+
+    .controller,
+
+    .top-icon {
+
+        display: none;
+
+    }
+
+
+    .gat-junction-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .map-legend {
+
+        left: 10px;
+
+        bottom: 10px;
+
+        gap: 8px;
+
+        padding: 10px;
+
+    }
+
+}

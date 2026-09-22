@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Dataset
+dataset/train/
+dataset/valid/
+dataset/test/
+dataset/*.zip
+
+# Uploaded test images
+dataset/test_images/*
+!dataset/test_images/.gitkeep
+
+# YOLO training outputs
+runs/
+
+# Model files
+*.pt
+*.pth
+
+# Temporary files
+*.tmp
+*.log
+
+# IDE
+.vscode/
+
+# Python cache
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
